@@ -63,7 +63,7 @@
     - reload_systemd
     - restart_wikijs
 
-- name: Start service
+- name: Start wikijs service
   service:
     name: wikijs
     state: started
