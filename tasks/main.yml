@@ -1,2 +1,70 @@
 ---
-# tasks
+- name: Include user creation tasks
+  include_tasks: user.yml
+  when: wikijs_create_user
+
+- name: Install NodeJS
+  import_role:
+    name: geerlingguy.nodejs
+  vars:
+    nodejs_version: "{{ wikijs_nodejs_version }}"
+    nodejs_install_npm_user: "{{ (wikijs_user | default({})).name | default(_wiki_defaultusr) }}"
+
+- name: Make wikijs home {{ wikijs_dir }}
+  ansible.builtin.file:
+    path: "{{ wikijs_dir }}"
+    state: directory
+    owner: "{{ (wikijs_user | default({})).name | default(_wiki_defaultusr) }}"
+    group: "{{ (wikijs_user | default({})).group | default(omit) }}"
+    mode: '0750'
+
+- name: Download wiki.js {{ wikijs_version }}
+  ansible.builtin.get_url:
+    url: https://github.com/Requarks/wiki/releases/download/{{ wikijs_version }}/wiki-js.tar.gz
+    dest: "/tmp/wikijs.tar.gz"
+    checksum: sha256:{{ wikijs_sha256 }}
+
+- name: Extract Archive
+  ansible.builtin.unarchive:
+    src: "/tmp/wikijs.tar.gz"
+    dest: "{{ wikijs_dir }}"
+    owner: "{{ (wikijs_user | default({})).name | default(_wiki_defaultusr) }}"
+    group: "{{ (wikijs_user | default({})).group | default(omit) }}"
+    remote_src: yes
+
+- name: Add configuration
+  template:
+    src: wikijs_config.yml.j2
+    dest: "{{ wikijs_dir }}/config.yml"
+    owner: "{{ (wikijs_user | default({})).name | default(_wiki_defaultusr) }}"
+    group: "{{ (wikijs_user | default({})).group | default(omit) }}"
+    mode: 0440
+  notify:
+    - restart_wikijs
+
+- name: Rebuild sqlite DB
+  shell: |
+    npm rebuild sqlite3
+    touch "{{ wikijs_dir }}/sqliterebuilt"
+  args:
+    creates: "{{ wikijs_dir }}/sqliterebuilt"
+    executable: bash
+  tags:
+    - skip_ansible_lint
+
+- name: Add service file
+  template:
+    src: wikijs.service.j2
+    dest: /etc/systemd/system/wikijs.service
+    owner: root
+    group: root
+    mode: 0444
+  notify:
+    - reload_systemd
+    - restart_wikijs
+
+- name: Start service
+  service:
+    name: wikijs
+    state: started
+    enabled: yes

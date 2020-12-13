@@ -1,2 +1,28 @@
 ---
-# ansible default variables
+wikijs_version: 2.5.170
+wikijs_sha256: 37c8415bb19bc4e7923123f7c37d7609ef737bb90bb8bea0eb8cf5615517e99b.
+wikijs_nodejs_version: 12.x
+
+wikijs_loglevel: info
+
+wikijs_port: 3000
+wikijs_dbtype: sqlite
+wikijs_db:
+  host: 127.0.0.1
+  port: 5432
+  user: wikijs
+  password: mywikipwnotreally
+  dbname: wikijs
+
+wikijs_create_user: true
+
+wikijs_dir: /opt/wikijs
+wikijs_user:
+  name: wikijs
+  comment: "Wiki.js User"
+  group: wikijs
+  gid: 10003
+  uid: 10002
+wikijs_ha: false
+
+_wiki_defaultusr: wikijs

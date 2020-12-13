@@ -1,0 +1,25 @@
+# {{ ansible_managed }}
+
+port: {{ wikijs_port }}
+
+{% if wikijs_dbtype == 'postgress' -%}
+db:
+  type: {{ wikijs_dbtype }}
+  host: {{ wikijs_db.host }}
+  port: {{ wikijs_db.port }}
+  user: {{ wikijs_db.user }}
+  pass: {{ wikijs_db.password }}
+  db: {{ wikijs_db.dbname }}
+{% elif wikijs_dbtype == 'sqlite' -%}
+db:
+  type: {{ wikijs_dbtype }}
+  storage: db.sqlite
+{% endif -%}
+
+logLevel: {{ wikijs_loglevel }}
+
+uploads:
+  maxFileSize: 5242880 # 5MB
+  maxFiles: 10
+
+ha: {{ wikijs_ha }}

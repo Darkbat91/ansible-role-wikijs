@@ -1,7 +1,7 @@
 CI Badge
 
-# Ansible template role
-basic Role to use going forward because I forget pieces
+# Ansible wikijs role
+Role to install and bootstrap nodejs
 
 ## Getting started
 Ensure all dependencies are installed and then follow the below process
@@ -34,5 +34,3 @@ There are numerous other options within the [defaults/main.yml](./defaults/main.
 
 ## Changelog
 The [changelog](./CHANGELOG.md) is stored externally
-
-

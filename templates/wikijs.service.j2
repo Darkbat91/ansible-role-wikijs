@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Wiki.js - The most powerful and extensible open source Wiki software.
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node server
+Restart=always
+User={{ (wikijs_user | default({})).name | default(_wiki_defaultusr) }}
+Environment=NODE_ENV=production
+WorkingDirectory={{ wikijs_dir }}
+
+[Install]
+WantedBy=multi-user.target

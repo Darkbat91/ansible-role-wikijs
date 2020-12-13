@@ -1,0 +1,19 @@
+---
+- name: Create wikijs group
+  ansible.builtin.group:
+    name: "{{ (wikijs_user | default({})).group }}"
+    gid: "{{ (wikijs_user | default({})).gid | default(omit) }}"
+    system: "{{ (wikijs_user | default({})).system | default('yes') }}"
+  when: (wikijs_user | default({})).group is defined
+
+- name: Create wikijs user
+  ansible.builtin.user:
+    name: "{{ (wikijs_user | default({})).name | default(_wiki_defaultusr) }}"
+    comment: "{{ (wikijs_user | default({})).comment | default(omit) }}"
+    uid: "{{ (wikijs_user | default({})).uid | default(omit) }}"
+    group: "{{ (wikijs_user | default({})).group | default(omit) }}"
+    groups: "{{ (wikijs_user | default({})).groups | default(omit) }}"
+    home: "{{ (wikijs_user | default({})).home | default(wikijs_dir) }}"
+    create_home: "{{ (wikijs_user | default({})).create_home | default('no') }}"
+    shell: "{{ (wikijs_user | default({})).shell | default(omit) }}"
+    system: "{{ (wikijs_user | default({})).system | default('no') }}"
