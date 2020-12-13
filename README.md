@@ -1,10 +1,15 @@
-CI Badge
+![CI](https://github.com/Darkbat91/ansible-role-wikijs/workflows/CI/badge.svg?branch=main)
 
 # Ansible wikijs role
 Role to install and bootstrap nodejs
 
 ## Getting started
 This role runs by default with a single sqlite database which is not recommended it should be updated with a more prodcution ready database.
+
+## requirements
+```
+geerlingguy.nodejs
+```
 
 ## Advanced
 

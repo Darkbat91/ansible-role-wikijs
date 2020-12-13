@@ -10,4 +10,16 @@
       changed_when: false
 
   roles:
+    - role: geerlingguy.postgresql
+      vars:
+        # postgresql_data_dir: **
+        postgresql_databases:
+          - name: wikijs
+            lc_ctype: C.utf8
+            lc_collate: C.utf8
+        postgresql_users:
+          - name: wikijs
+            password: mywikipwnotreally
     - role: ansible-role-wikijs
+      vars:
+        wikijs_dbtype: postgres

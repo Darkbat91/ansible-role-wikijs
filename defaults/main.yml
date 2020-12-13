@@ -13,6 +13,7 @@ wikijs_db:
   user: wikijs
   password: mywikipwnotreally
   dbname: wikijs
+  ssl: false
 
 wikijs_create_user: true
 

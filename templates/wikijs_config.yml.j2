@@ -2,7 +2,7 @@
 
 port: {{ wikijs_port }}
 
-{% if wikijs_dbtype == 'postgress' -%}
+{% if wikijs_dbtype == 'postgres' -%}
 db:
   type: {{ wikijs_dbtype }}
   host: {{ wikijs_db.host }}
@@ -10,6 +10,7 @@ db:
   user: {{ wikijs_db.user }}
   pass: {{ wikijs_db.password }}
   db: {{ wikijs_db.dbname }}
+  ssl: {{ wikijs_db.ssl | default(false)  }}
 {% elif wikijs_dbtype == 'sqlite' -%}
 db:
   type: {{ wikijs_dbtype }}
